@@ -54,6 +54,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Acceleration gravity;
     int ticks = 0;
     int grabberPos = 0;
+    int IMUresets = 0;
 
     BNO055IMU imu;
 
@@ -171,8 +172,9 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             grabber.setPosition(grabberPos);
 
-            if(gamepad1.right_trigger && gamepad1.left_trigger){
+            if(gamepad1.right_trigger == 1 && gamepad1.left_trigger == 1){
                 initIMU(hardwareMap);
+
             }
 
             if(gamepad1.dpad_up){
@@ -195,6 +197,8 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
             // Show the wheel power.
+            telemetry.addData("IMU Resets", IMUresets);
+            telemetry.addData("Grabber", grabberPos);
             telemetry.addData("Motors", "carousel");
             telemetry.addData("Arm Position", ticks);
             telemetry.update();
