@@ -169,6 +169,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 grabberPos = 90;
             }
 
+            grabber.setPosition(grabberPos);
 
             if(gamepad1.right_trigger && gamepad1.left_trigger){
                 initIMU(hardwareMap);
