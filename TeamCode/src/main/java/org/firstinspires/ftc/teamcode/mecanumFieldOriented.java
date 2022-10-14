@@ -53,7 +53,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticks = 0;
-    int grabberPos = 0;
+    double grabberPos = 1;
     int IMUresets = 0;
 
     BNO055IMU imu;
@@ -85,8 +85,6 @@ public class mecanumFieldOriented extends LinearOpMode {
         Servo grabber = hardwareMap.servo.get("grabber");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-
-        grabber.setPosition(180);
         initIMU(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -119,9 +117,9 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //set gamepad values
-            double x = -gamepad1.left_stick_x;
-            double y = -gamepad1.left_stick_y;
-            double t = gamepad1.right_stick_x;
+            double y = -gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_y;
+            double t = -gamepad1.right_stick_x;
 
             //get angle
 
@@ -159,31 +157,32 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
             if(gamepad1.dpad_left){
-                grabberPos++;
+                grabberPos -= 0.01;
             }else if(gamepad1.dpad_right){
-                grabberPos--;
+                grabberPos += 0.01;
             }
 
-            if(grabberPos >= 180){
-                grabberPos = 180;
-            } else if(grabberPos <= 90){
-                grabberPos = 90;
+            if(grabberPos >= 1){
+                grabberPos = 1;
+            } else if(grabberPos <= 0){
+                grabberPos = 0;
             }
 
             grabber.setPosition(grabberPos);
 
             if(gamepad1.right_trigger == 1 && gamepad1.left_trigger == 1){
                 initIMU(hardwareMap);
-
+                IMUresets++;
             }
 
             if(gamepad1.dpad_up){
-                ticks++;
+                arm1.setPower(0.5);
             } else if(gamepad1.dpad_down){
-                ticks--;
+                arm1.setPower(-0.1);
+            }else{
+                arm1.setPower(0.1);
             }
-            arm1.setTargetPosition(ticks);
-            arm1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
             //Manual Arm Movement
 
