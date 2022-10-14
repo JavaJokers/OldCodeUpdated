@@ -53,6 +53,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticks = 0;
+    int grabberPos = 0;
 
     BNO055IMU imu;
 
@@ -84,7 +85,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
-
+        grabber.setPosition(180);
         initIMU(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -156,7 +157,22 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             }
 
+            if(gamepad1.dpad_left){
+                grabberPos++;
+            }else if(gamepad1.dpad_right){
+                grabberPos--;
+            }
 
+            if(grabberPos >= 180){
+                grabberPos = 180;
+            } else if(grabberPos <= 90){
+                grabberPos = 90;
+            }
+
+
+            if(gamepad1.right_trigger && gamepad1.left_trigger){
+                initIMU(hardwareMap);
+            }
 
             if(gamepad1.dpad_up){
                 ticks++;
@@ -171,7 +187,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //control carousel wheel
-            if (gamepad1.x || gamepad2.x) {
+            if (gamepad1.x) {
                 duckies.setPower(-0.8);
             } else {
                 duckies.setPower(0);
