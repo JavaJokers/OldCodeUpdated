@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -80,7 +80,6 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
         DcMotor arm1 = hardwareMap.dcMotor.get("arm1");
         DcMotor duckies = hardwareMap.dcMotor.get("duckies");
-        Servo wrist1 = hardwareMap.servo.get("wrist");
         Servo grabber = hardwareMap.servo.get("grabber");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
