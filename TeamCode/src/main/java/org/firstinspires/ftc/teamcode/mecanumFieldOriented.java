@@ -34,6 +34,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -117,9 +118,9 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //set gamepad values
-            double y = -gamepad1.left_stick_x;
-            double x = gamepad1.left_stick_y;
-            double t = -gamepad1.right_stick_x;
+            double y = -gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x * 1.1;
+            double t = gamepad1.right_stick_x;
 
             //get angle
 
@@ -128,11 +129,11 @@ public class mecanumFieldOriented extends LinearOpMode {
             double x_rotated = x * Math.cos(angles.firstAngle) - y * Math.sin(angles.firstAngle);
             double y_rotated = x * Math.sin(angles.firstAngle) + y * Math.cos(angles.firstAngle);
 
-            // x, y, theta input mixing
-            frontLeftPower = x_rotated + y_rotated + t;
-            backLeftPower = x_rotated - y_rotated + t;
-            frontRightPower = x_rotated - y_rotated - t;
-            backRightPower = x_rotated + y_rotated - t;
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
+            frontLeftPower = (y_rotated + x_rotated + t) / denominator;
+            backLeftPower = (y_rotated - x_rotated + t) / denominator;
+            frontRightPower = (y_rotated - x_rotated - t) / denominator;
+            backRightPower = (y_rotated + x_rotated - t) / denominator;
 
 
             // Send calculated power to motors
